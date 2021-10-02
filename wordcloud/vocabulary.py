@@ -1,7 +1,7 @@
 import itertools
 
-# 
-def set_vocab(num_words, data_file, stopwords):
+# Creates vocabularity of num_words given data_file and a list of stopwords (words to exclude)
+def create_vocab(num_words, data_file, stopwords):
     vocab = {}
     with open(data_file) as file:
         for line in file:
