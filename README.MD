@@ -4,3 +4,4 @@
 3. [Wordle by Jonathan Feinberg](http://static.mrfeinberg.com/bv_ch03.pdf)
 4. [Known English Stop Words by PyTagCloud](https://github.com/atizo/PyTagCloud/blob/master/pytagcloud/lang/stop/english)
 5. [Fonts for Word Clouds by PyTagCloud](https://github.com/atizo/PyTagCloud/tree/master/pytagcloud/fonts)
+6. [AABBTree PyPi Project by Kenneth Hart](https://pypi.org/project/aabbtree/)
