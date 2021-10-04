@@ -5,8 +5,17 @@ from wordcloud.stopwords import set_stopwords
 from wordcloud.vocabulary import create_vocab
 from aabbtree import AABB, AABBTree
 
+# TO DO
+# 1. RANDOMIZE FONT SELECTION
+# 2. MAKE FONT SIZE MULTIPLIER DYNAMIC
+# 3. MAKE WORD PLACEMENT FAVOUR THE CENTER OF THE CANVAS
+# 4. CLEAN UP IMAGE GENERATION
+# 5. REFACTOR WORD PLACEMENT GRID
+# 6. REFACTOR WORD BOUNDS 
+# 7. REFACTOR WORD CLOUD GENERATION
+
 # WORD CLOUD INPUT PARAMS
-NUM_WORDS = 60
+NUM_WORDS = 32
 CONST_SCALE = 12
 FONT_SIZE_MULTIPLIER = 7
 IMAGE_WIDTH, IMAGE_HEIGHT = 500, 500
@@ -24,6 +33,17 @@ IMG_FILEPATH = './output/wordcloud.png'
 img = Image.new('RGB', (IMAGE_WIDTH, IMAGE_HEIGHT), color='white')
 draw = ImageDraw.Draw(img)
 
+# CREATES WORDCLOUD BOUNDS DETECTION IMAGE
+IMG1_FILEPATH = './output/word-bounds.png'
+img1 = Image.new('RGB', (IMAGE_WIDTH, IMAGE_HEIGHT), color='white')
+draw1 = ImageDraw.Draw(img1)
+
+# CREATES WORDCLOUD GRID FOR WORD PLACEMENT
+IMG2_FILEPATH = './output/word-placement-grid.png'
+img2 = Image.new('RGB', (IMAGE_WIDTH, IMAGE_HEIGHT), color='white')
+draw2 = ImageDraw.Draw(img2)
+
+
 # DETERMINE FONT SIZES - FIRST NEED TO GET TOTAL NUMBER OF OCCURENCES OF ALL WORDS IN OUR VOCAB
 vocab_sizes = {}
 num_vocab_occurences = 0
@@ -35,11 +55,6 @@ for word in vocab:
 for word in vocab_sizes:
     font_size = round((vocab_sizes[word] * FONT_SIZE_MULTIPLIER / num_vocab_occurences) * 100, 0)
     vocab_sizes[word] = int(font_size)
-
-
-
-# LAND OF NO RETURN
-# EVERYTHING BELOW THIS POINT NEEDS REFACTORED BADLY 
 
 # Find 4 subsquares within a given square, just provide start/end coords for the initial square
 def find_subsquares(start_coord, end_coord):
@@ -98,14 +113,15 @@ while len(square_list) > 0 and len(square_list) <  num_squares:
 count = 1
 for sq in square_list:
     if count <= pow(4, 0):
-        draw.rectangle(sq, outline=(255,0,0), width = 9)
+        draw2.rectangle(sq, outline=(255,0,0), width = 12)
     elif count <= pow(4, 1) + pow(4, 0):
-        draw.rectangle(sq, outline=(0,255,0), width = 6)
+        draw2.rectangle(sq, outline=(0,255,0), width = 6)
     elif count <= pow(4, 2) + pow(4, 1) + pow(4, 0):
-        draw.rectangle(sq, outline=(0,0,255), width = 3)
+        draw2.rectangle(sq, outline=(0,0,255), width = 3)
     else:
-        draw.rectangle(sq, outline=(255,0,255), width = 1)
+        draw2.rectangle(sq, outline=(255,0,255), width = 1)
     count += 1
+img2.save(IMG2_FILEPATH)
 
 
 # DRAW WORDS
@@ -136,9 +152,10 @@ while len(vocab) > 0:
                         tree.add(aabb, word)
                         break
 
-    draw.rectangle(word_box, outline=(255,0,0), width=1)
+    draw1.rectangle(word_box, outline=(255,0,0), width=1)
     draw.text(new_coords, word, FONT_COLOUR, font=font)
     img.save(IMG_FILEPATH)
+    img1.save(IMG1_FILEPATH)
 
 img.save(IMG_FILEPATH)
-
+img2.save(IMG2_FILEPATH)
