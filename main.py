@@ -4,9 +4,6 @@ from PIL import Image, ImageFont, ImageDraw
 from wordcloud.stopwords import set_stopwords
 from wordcloud.vocabulary import create_vocab
 from aabbtree import AABB, AABBTree
-from anytree import Node, RenderTree, AnyNode
-from anytree.exporter import DotExporter
-
 
 # WORD CLOUD INPUT PARAMS
 NUM_WORDS = 32
@@ -67,27 +64,16 @@ def find_subsquares(start_coord, end_coord):
         sq4 = ((width/2 + startx, height/2 + starty), (endx, endy))
     return (sq1, sq2, sq3, sq4)
 
-def center_square(square):
-    width = square[1][0] - square[0][0] + square[0][0]
-    height = square[1][1] - square[0][1] + square[0][1]
-    return(width/2, height/2)
-
 def center_word_in_square(square, word_box):
-   # print(word_box)
-
     width = square[1][0] - square[0][0]
     height = square[1][1] - square[0][1]
-    print("square w: %s\th:%s" % (width, height))
 
     word_width = word_box[0]
     word_height = word_box[1]
-    print("word box w: %s\th:%s" % (word_width, word_height))
-
-
 
     new_width = ((width - word_width)/2) + square[0][0]
     new_height = ((height - word_height)/2) + square[0][1]
-    #print(new_width, new_height)
+
     return (new_width, new_height)
 
 
@@ -121,34 +107,9 @@ for sq in square_list:
         draw.rectangle(sq, outline=(255,0,255), width = 1)
     count += 1
 
-#center_square(square)
-#print(center_square(square))
-#print("center: %s" % str(center_square(square)))
-
-# root of tree - need to generate all coords dynamically
-# root = Node(square_list.pop(0))
-# root = Node(((0, 0), (IMAGE_WIDTH, IMAGE_HEIGHT)))    # root has max coords
-# draw.rectangle(((0, 0), (IMAGE_WIDTH, IMAGE_HEIGHT)), outline=(255,0,0), width=2)
-# num_squares = 1
-# squares = [((0, 0), (IMAGE_WIDTH, IMAGE_HEIGHT))]
-# new_squares = find_subsquares((0, 0), (IMAGE_WIDTH, IMAGE_HEIGHT))
-# for square in new_squares:
-#     draw.rectangle(square, outline=(0,255,0), width = 3)
-
-# 2nd row in tree
-# tl = Node(((0, 0), (IMAGE_WIDTH/2, IMAGE_HEIGHT/2)), parent=root)
-# tr = Node(((IMAGE_WIDTH/2, 0), (IMAGE_WIDTH, IMAGE_HEIGHT/2)), parent=root)
-# bl = Node(((0, IMAGE_HEIGHT/2), (IMAGE_WIDTH/2, IMAGE_HEIGHT)), parent=root)
-# br = Node(((IMAGE_WIDTH/2, IMAGE_HEIGHT/2), (IMAGE_WIDTH, IMAGE_HEIGHT)), parent=root)
-
-# # for pre, fill, node in RenderTree(root):
-# #     print("%s%s" % (pre, node.name))
-
-# print("\n%s" % RenderTree(root))
 
 # DRAW WORDS
 tree = AABBTree()
-new_tree =  AABBTree()
 while len(vocab) > 0:
     # info about the word
     word_tuple = vocab.popitem()
@@ -159,64 +120,25 @@ while len(vocab) > 0:
     # while a valid placement for word hasn't been found
     valid = False
     while not valid:
-
-        # need to   change my  center square functiont o place a word there, not just return center...
         for sq in square_list:
-            coords = center_square(sq)
-
             word_box_size = font.getsize(word)
-           #print("wbs: %s" % str(word_box_size))
-
-            new_coords = center_word_in_square(sq, word_box_size)
-            print(word, new_coords, sq)
-            
-            word_box = (coords[0] - CONST_SCALE, coords[1]), (coords[0] + word_box_size[0] + CONST_SCALE, coords[1] + word_box_size[1])
+            new_coords = center_word_in_square(sq, word_box_size)   # centers word in current sq
             word_box = (new_coords[0] - CONST_SCALE, new_coords[1]), (new_coords[0] + word_box_size[0] + CONST_SCALE, new_coords[1] + word_box_size[1])
 
+            # Collision detection - check whether word box overlaps with any already placed words
             limits = [(word_box[0][0], word_box[1][0]), (word_box[0][1], word_box[1][1])]
             aabb = AABB(limits)
             if not tree.does_overlap(aabb):
-                #print(coords)
                 if word_box[0][0] > 0 and word_box[1][0] < IMAGE_WIDTH:
                     if word_box[0][1] > 0 and word_box[1][1] < IMAGE_HEIGHT:
-                        print("valid %s" %  str(new_coords))
                         valid = True
                         square_list.remove(sq)
                         tree.add(aabb, word)
                         break
 
-            print("")
-
     draw.rectangle(word_box, outline=(255,0,0), width=1)
     draw.text(new_coords, word, FONT_COLOUR, font=font)
-    
     img.save(IMG_FILEPATH)
-    #sys.exit()
-print(tree)
-
-        # spatial indexing with quadtrees
-        # Places each word on the canvas, draws a rectangle around it    
-        # coords = (random.randint(0,500), random.randint(0,500))
-        # word_box_size = font.getsize(word)
-
-        # # Checks whether the box surrounding thwe word is within the bounds of the canvas
-        # word_box = (coords[0] - CONST_SCALE, coords[1]), (coords[0] + word_box_size[0] + CONST_SCALE, coords[1] + word_box_size[1])
-        # if word_box[0][0] < IMAGE_WIDTH and word_box[1][0] < IMAGE_WIDTH:
-        #     if word_box[0][1] < IMAGE_HEIGHT and word_box[1][1] < IMAGE_HEIGHT:
-        #         valid = True
-
-        # # AABB (Axis Aligned Bounding Box) Tree to determine whether word box collides with a word that's already been placed.
-        # limits = [(word_box[0][0], word_box[1][0]), (word_box[0][1], word_box[1][1])]
-        # aabb = AABB(limits)
-        # if tree.does_overlap(aabb):
-        #     valid = False
-        # else:
-        #     valid = True
-
-    #tree.add(aabb, word)
-
-
-   # sys.exit()
 
 img.save(IMG_FILEPATH)
 
