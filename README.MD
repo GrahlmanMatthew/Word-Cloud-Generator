@@ -1,3 +1,15 @@
+## This project is a work in progress
+
+## Sample Results
+### Sample Output
+![](./output/wordcloud.png)
+
+### Sample Word Bounds for Collision Detection
+![](./output/word-bounds.png)
+
+## Sample Word Placement Grid
+![](./output/word-placement-grid.png)
+
 ## References
 1. [1984 by George Orwell, Uploaded by Project Gutenberg Australia](https://gutenberg.net.au/ebooks01/0100021.txt)
 2. [StackOverflow - Algorithm to Implement Word Cloud like Wordle](https://stackoverflow.com/questions/342687/algorithm-to-implement-a-word-cloud-like-wordle)
