@@ -6,7 +6,7 @@ from wordcloud.vocabulary import create_vocab
 from aabbtree import AABB, AABBTree
 
 # WORD CLOUD INPUT PARAMS
-NUM_WORDS = 32
+NUM_WORDS = 60
 CONST_SCALE = 12
 FONT_SIZE_MULTIPLIER = 7
 IMAGE_WIDTH, IMAGE_HEIGHT = 500, 500
