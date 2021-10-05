@@ -5,22 +5,30 @@ from wordcloud.grid import GridGenerator, center_word_in_square
 from wordcloud.cloud import place_words
 from aabbtree import AABB, AABBTree
 
+# INPUT DATA FILE PATHS
+STOPWORDS_DATA_PATH = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '.', 'lang', 'stopwords.txt'))
+INPUT_DATA_PATH = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '.', 'input', 'data.txt'))
+
+# WORD CLOUD SETTINGS FOR OUTPUT IMAGE
+NUM_WORDS = 32
+IMAGE_WIDTH = 500
+IMAGE_HEIGHT = 500
+
+
+
 # TO DO
-# 1. RANDOMIZE FONT SELECTION
 # 2. MAKE FONT SIZE MULTIPLIER DYNAMIC
 # 3. MAKE WORD PLACEMENT FAVOUR THE CENTER OF THE CANVAS
 # 4. CLEAN UP IMAGE GENERATION [wip]
 
 # WORD CLOUD INPUT PARAMS
-NUM_WORDS = 32
+#NUM_WORDS = 32
 CONST_SCALE = 12
 FONT_SIZE_MULTIPLIER = 7
-IMAGE_WIDTH, IMAGE_HEIGHT = 500, 500
-STOPWORDS_DATA_PATH = './lang/stopwords.txt'
-stopwords = set_stopwords(STOPWORDS_DATA_PATH)
+#IMAGE_WIDTH, IMAGE_HEIGHT = 500, 500
 
 # NORMALIZE INPUT DATA FROM FILE AND BUILD WORD DICT
-INPUT_DATA_PATH = './input/data.txt'
+stopwords = set_stopwords(STOPWORDS_DATA_PATH)
 vocab = create_vocab(NUM_WORDS, INPUT_DATA_PATH, stopwords)
 print("%d most common words; %s" % (NUM_WORDS, vocab))
 

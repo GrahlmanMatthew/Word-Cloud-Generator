@@ -19,4 +19,5 @@ def create_vocab(num_words, data_file, stopwords):
     sorted_words = {k: v for k, v in sorted(vocab.items(), key=lambda item: item[1])}
     if len(sorted_words) > num_words:
         sorted_words = dict(itertools.islice(sorted_words.items(), len(sorted_words)-num_words, None))
+    print("%d most common words; %s" % (num_words, sorted_words))
     return sorted_words
