@@ -1,4 +1,5 @@
 import os
+import random
 from PIL import Image, ImageDraw
 
 # DEFAULT OUTPUT PATH
@@ -17,21 +18,30 @@ class GridGenerator:
 
         self.grid = generate_grid_coords(self.grid_width, self.grid_height, self.num_squares)
 
+    # DRAWS GRID AND OUTPUTS IT
     def draw_grid(self, grid_path=GRID_IMG_FILEPATH):
         GRID_IMG = Image.new('RGB', (self.grid_width, self.grid_height), color='white')
         draw = ImageDraw.Draw(GRID_IMG)
 
-        count = 1
+        # Calculates sum some grid can be drawn dynamically
+        sums = []
+        for x in range(0, self.exponent):
+            val = pow(4, x) if x == 0 else pow(4, x) + sums[x-1]
+            sums.append(val)
+
+        # Draws grid dynamically based on num words to be placed
+        num_drawn = 1
+        width = pow(2, len(sums))
+        rand_colour = colour()
         for square in self.grid:
-            if count <= pow(4, 0):
-                draw.rectangle(square, outline=(255,0,0), width = 12)
-            elif count <= pow(4, 1) + pow(4, 0):
-                draw.rectangle(square, outline=(0,255,0), width = 6)
-            elif count <= pow(4, 2) + pow(4, 1) + pow(4, 0):
-                draw.rectangle(square, outline=(0,0,255), width = 3)
-            else:
-                draw.rectangle(square, outline=(255,0,255), width = 1)
-            count += 1
+            for sum in sums:
+                if(num_drawn <= sum):
+                    draw.rectangle(square, outline=rand_colour, width=width) 
+                    if num_drawn == sum:
+                        width = int(width / 2)
+                        rand_colour = colour()
+                    num_drawn += 1
+                    break
         GRID_IMG.save(grid_path)
 
     def get_grid(self):
@@ -91,3 +101,7 @@ def generate_grid_coords(grid_width, grid_height, num_squares):
             square_list.append(subsq)
         index += 1
     return square_list
+
+# Generates a random RGB Colour tuple
+def colour():
+    return (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
