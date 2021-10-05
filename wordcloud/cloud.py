@@ -1,4 +1,3 @@
-import sys
 import os
 import math
 import random
@@ -46,23 +45,19 @@ def place_words(vocab, grid, grid_gen, wc_img_path=WC_IMG_FILEPATH, wc_bounds_im
 
                 aabb = AABB([(word_box[0][0], word_box[1][0]), (word_box[0][1], word_box[1][1])])   # potential node (word placement) in tree
                 collides = word_box_tree.does_overlap(aabb)     # returns true if node (word placement) does not collide with already placed words
-
-                print(word, word_size, word_box_size)
-
-
                 if not collides:
                     if word_box[0][0] > 0 and word_box[1][0] < grd_width and word_box[0][1] > 0 and word_box[1][1] < grd_height:
                         valid_placement = True
                         grd.remove(square)      # removes square from grid so we can't place another word there
                         word_box_tree.add(aabb, word)
+                        WC_BOUNDS_DRAW.rectangle(word_box, outline=(255,0,0), width=1)
+                        WC_DRAW.text(coords, word, (0, 0, 0), font=font)  
                         break  
             
             if not valid_placement:
                 break
 
-
-        WC_BOUNDS_DRAW.rectangle(word_box, outline=(255,0,0), width=1)
-        WC_DRAW.text(coords, word, (0, 0, 0), font=font)  
+    # Save output images
     WC_BOUNDS_IMG.save(wc_bounds_img_path)
     WC_IMG.save(wc_img_path)
 
@@ -71,7 +66,6 @@ def get_random_font_path():
     FONT_DIR = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'fonts'))
     font_name = random.choice(os.listdir(FONT_DIR))
     font_path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', FONT_DIR, font_name))
-    print(font_path)
     return font_path
 
 # DETERMINE FONT SIZES - FIRST NEED TO GET TOTAL NUMBER OF OCCURENCES OF ALL WORDS IN OUR VOCAB
@@ -85,15 +79,9 @@ def get_all_vocab_occurences(vocab):
 
 # CALCULATE FONT SIZE FOR EACH WORD
 def calculate_font_sizes(vocab, voc_size):
-    vocab_sizes = {}
-
-    print(voc_size)
-    FONT_SIZE_MULTIPLIER = 7
+    font_sizes = {}
     FONT_SIZE_MULTIPLIER = math.floor(math.log(voc_size, 10) * 2)
-    print(FONT_SIZE_MULTIPLIER)
-    
     for word in vocab:
         font_size = round((vocab[word] * FONT_SIZE_MULTIPLIER / voc_size) * 100, 0)
-        print(font_size)
-        vocab_sizes[word] = int(font_size)
-    return vocab_sizes
+        font_sizes[word] = int(font_size)
+    return font_sizes

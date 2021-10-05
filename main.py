@@ -9,15 +9,13 @@ STOPWORDS_DATA_PATH = os.path.abspath(os.path.join(os.path.dirname( __file__ ), 
 INPUT_DATA_PATH = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '.', 'input', 'data.txt'))
 
 # WORD CLOUD SETTINGS FOR OUTPUT IMAGE
-NUM_WORDS = 16
+NUM_WORDS = 24
 IMAGE_WIDTH = 500
 IMAGE_HEIGHT = 500
 
 # TO DO
-# 2. MAKE FONT SIZE MULTIPLIER DYNAMIC
 # 3. MAKE WORD PLACEMENT FAVOUR THE CENTER OF THE CANVAS
 # 4. CLEAN UP IMAGE GENERATION [wip]
-CONST_SCALE = 12
 
 # NORMALIZE INPUT DATA FROM FILE AND BUILD WORD DICT
 stopwords = set_stopwords(STOPWORDS_DATA_PATH)
