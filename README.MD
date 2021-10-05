@@ -1,14 +1,14 @@
-## This project is a work in progress
+# WIP
 
 ## Sample Results
 ### Sample Output
-![](./output/wordcloud.png)
+<img src="./output/wordcloud.png" width="250" height="250">
 
 ### Sample Word Bounds for Collision Detection
-![](./output/word-bounds.png)
+<img src="./output/word-bounds.png" width="250" height="250">
 
 ## Sample Word Placement Grid
-![](./output/word-placement-grid.png)
+<img src="./output/word-placement-grid.png" width="250" height="250">
 
 ## References
 1. [1984 by George Orwell, Uploaded by Project Gutenberg Australia](https://gutenberg.net.au/ebooks01/0100021.txt)
