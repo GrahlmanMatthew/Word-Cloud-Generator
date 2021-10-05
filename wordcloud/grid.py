@@ -84,7 +84,6 @@ def generate_grid_coords(grid_width, grid_height, num_squares):
     square = ((0, 0), (grid_width, grid_height))
     square_list = []
     square_list.append(square)
-    print(square_list)
     index = 0
     while len(square_list) > 0 and len(square_list) <  num_squares:
         subsquares = find_subsquares(square_list[index][0], square_list[index][1])

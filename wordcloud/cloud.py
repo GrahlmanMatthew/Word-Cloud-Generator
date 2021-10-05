@@ -9,9 +9,6 @@ from wordcloud.grid import GridGenerator, center_word_in_square
 WC_IMG_FILEPATH = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'output', 'wordcloud.png'))   
 WC_BOUNDS_IMG_FILEPATH = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'output', 'word-bounds.png'))  
 
-FONT_DIR = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'fonts'))   
-FONT_COLOUR = (0, 0, 0)     # BLACK
-
 # Place words in the vocabulary on the grid
 def place_words(vocab, vocab_sizes, grid, grid_gen, wc_img_path=WC_IMG_FILEPATH, wc_bounds_img_path=WC_BOUNDS_IMG_FILEPATH):
     voc = deepcopy(vocab)
@@ -20,7 +17,6 @@ def place_words(vocab, vocab_sizes, grid, grid_gen, wc_img_path=WC_IMG_FILEPATH,
     grd_width = grid_gen.get_grid_width()
     grd_height = grid_gen.get_grid_height()
     word_box_tree = AABBTree()      # for collision detection    
-    font_colour = (0, 0, 0) # black
 
     # WORDCLOUD IMAGE TO OUTPUT
     WC_IMG = Image.new('RGB', (grd_width, grd_height), color='white')
@@ -35,11 +31,7 @@ def place_words(vocab, vocab_sizes, grid, grid_gen, wc_img_path=WC_IMG_FILEPATH,
         word_tuple = voc.popitem()
         word = word_tuple[0]
         word_size = voc_sizes[word]
-
-        # font to be used
-        font_name = random.choice(os.listdir(FONT_DIR))
-        font_path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', FONT_DIR, font_name))
-        font = ImageFont.truetype(font_path, word_size)
+        font = ImageFont.truetype(get_random_font_path(), word_size)
 
         # find valid placement for this word in the grid
         valid_placement = False
@@ -60,7 +52,13 @@ def place_words(vocab, vocab_sizes, grid, grid_gen, wc_img_path=WC_IMG_FILEPATH,
                         break  
 
         WC_BOUNDS_DRAW.rectangle(word_box, outline=(255,0,0), width=1)
-        WC_DRAW.text(coords, word, FONT_COLOUR, font=font)
+        WC_DRAW.text(coords, word, (0, 0, 0), font=font)
         
     WC_BOUNDS_IMG.save(wc_bounds_img_path)
     WC_IMG.save(wc_img_path)
+
+def get_random_font_path():
+    FONT_DIR = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'fonts'))
+    font_name = random.choice(os.listdir(FONT_DIR))
+    font_path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', FONT_DIR, font_name))
+    return font_path
