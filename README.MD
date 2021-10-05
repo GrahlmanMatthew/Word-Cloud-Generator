@@ -2,9 +2,7 @@
 
 ## Sample Results
 ### Sample Outputs 
-<img src="./output/wordcloud.png" width="250" height="250">
-<img src="./output/word-bounds.png" width="250" height="250">
-<img src="./output/word-placement-grid.png" width="250" height="250">
+<img src="./output/wordcloud.png" width="250" height="250"> <img src="./output/word-bounds.png" width="250" height="250"> <img src="./output/word-placement-grid.png" width="250" height="250">
 
 - Left most image is the generated Word Cloud
 - Middle image is the words bound detection boxes visualized
