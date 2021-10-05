@@ -1,4 +1,5 @@
 import os
+import random
 from copy import deepcopy
 from aabbtree import AABB, AABBTree
 from PIL import Image, ImageFont, ImageDraw
@@ -8,6 +9,7 @@ from wordcloud.grid import GridGenerator, center_word_in_square
 WC_IMG_FILEPATH = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'output', 'wordcloud.png'))   
 WC_BOUNDS_IMG_FILEPATH = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'output', 'word-bounds.png'))  
 
+FONT_DIR = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'fonts'))   
 FONT_COLOUR = (0, 0, 0)     # BLACK
 
 # Place words in the vocabulary on the grid
@@ -35,7 +37,8 @@ def place_words(vocab, vocab_sizes, grid, grid_gen, wc_img_path=WC_IMG_FILEPATH,
         word_size = voc_sizes[word]
 
         # font to be used
-        font_path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'fonts', 'PT_Sans-Regular.ttf'))
+        font_name = random.choice(os.listdir(FONT_DIR))
+        font_path = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', FONT_DIR, font_name))
         font = ImageFont.truetype(font_path, word_size)
 
         # find valid placement for this word in the grid
