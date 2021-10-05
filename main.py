@@ -1,7 +1,4 @@
 import os
-import sys
-import random
-from PIL import Image, ImageFont, ImageDraw
 from wordcloud.stopwords import set_stopwords
 from wordcloud.vocabulary import create_vocab
 from wordcloud.grid import GridGenerator, center_word_in_square
