@@ -9,14 +9,13 @@ STOPWORDS_DATA_PATH = os.path.abspath(os.path.join(os.path.dirname( __file__ ), 
 INPUT_DATA_PATH = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '.', 'input', 'data.txt'))
 
 # WORD CLOUD SETTINGS FOR OUTPUT IMAGE
-NUM_WORDS = 86
+NUM_WORDS = 24
 IMAGE_WIDTH = 500
 IMAGE_HEIGHT = 500
 
 # TO DO
 # 1. MAKE WORD PLACEMENT FAVOUR THE CENTER OF THE CANVAS
 # 2. CLEAN UP IMAGE GENERATION [wip]
-# 3 fix bug in grid generator lower quads on num_words>85
 
 # NORMALIZE INPUT DATA FROM FILE AND BUILD WORD DICT
 stopwords = set_stopwords(STOPWORDS_DATA_PATH)

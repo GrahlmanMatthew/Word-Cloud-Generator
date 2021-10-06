@@ -3,7 +3,7 @@ import random
 from PIL import Image, ImageDraw
 
 # DEFAULT OUTPUT PATH
-GRID_IMG_FILEPATH = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'output', 'word-placement-grid.png'))
+GRID_IMG_FILEPATH = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'output', 'grid.png'))
 
 # GRID GENERATOR
 class GridGenerator:
@@ -60,20 +60,35 @@ def find_subsquares(start_coord, end_coord):
     width = endx - startx
     height = endy - starty
     if starty == 0:
+        print("y=0")
         sq1 = ((startx, starty), (width/2 + startx, height/2))
+
         sq2 = ((width/2 + startx, starty), (endx, height/2))
+        print(sq2)
+
         sq3 = ((startx, height/2), (width/2 + startx, height))
         sq4 = ((width/2 + startx, height/2 + starty), (endx, endy))
+        return (sq1, sq2, sq3, sq4)
     elif startx == 0:
+        print("x=0")
         sq1 = ((startx, starty), (width/2, height/2 + starty))
+
         sq2 = ((width/2 + startx, starty), (endx, height/2 + starty))
+        print(sq2)
+
         sq3 = ((startx, height/2 + starty), (width/2 + startx, height  + starty))
         sq4 = ((width/2 + startx, height/2 + starty), (endx, endy))
+        return (sq1, sq2, sq3, sq4)
     else:
+        print("else")
         sq1 = ((startx, starty), (width/2 + startx, height/2 + starty))
-        sq2 = ((width/2 + startx, height), (endx, height/2 + starty))
+
+        sq2 = ((width/2 + startx, starty), (endx, height/2 + starty))
+        print(sq2)
+
         sq3 = ((startx, height/2 + starty), (width/2 + startx, height  + starty))
         sq4 = ((width/2 + startx, height/2 + starty), (endx, endy))
+        return (sq1, sq2, sq3, sq4)
     return (sq1, sq2, sq3, sq4)
 
 def center_word_in_square(square, word_box):
