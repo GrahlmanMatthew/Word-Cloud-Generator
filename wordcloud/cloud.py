@@ -14,10 +14,10 @@ WC_BOUNDS_IMG_FILEPATH = os.path.abspath(os.path.join(os.path.dirname( __file__ 
 def place_words(vocab, grid, grid_gen, wc_img_path=WC_IMG_FILEPATH, wc_bounds_img_path=WC_BOUNDS_IMG_FILEPATH):
     voc = deepcopy(vocab)
     voc_size = get_all_vocab_occurences(voc)   # calc num occurences of each word
-    font_sizes = calculate_font_sizes(vocab, voc_size)
     grd = deepcopy(grid)
     grd_width = grid_gen.get_grid_width()
     grd_height = grid_gen.get_grid_height()
+    font_sizes = calculate_font_sizes(grd_width, grd_height, vocab, voc_size)
     word_box_tree = AABBTree()      # for collision detection    
 
     # WORDCLOUD IMAGE TO OUTPUT
@@ -78,9 +78,9 @@ def get_all_vocab_occurences(vocab):
     return num_vocab_occurences
 
 # CALCULATE FONT SIZE FOR EACH WORD
-def calculate_font_sizes(vocab, voc_size):
+def calculate_font_sizes(grid_width, grid_height, vocab, voc_size):
     font_sizes = {}
-    FONT_SIZE_MULTIPLIER = math.floor(math.log(voc_size, 10) * 2)
+    FONT_SIZE_MULTIPLIER = grid_width / math.floor(math.log(voc_size, 10) * 20)
     for word in vocab:
         font_size = round((vocab[word] * FONT_SIZE_MULTIPLIER / voc_size) * 100, 0)
         font_sizes[word] = int(font_size)

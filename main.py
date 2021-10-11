@@ -14,7 +14,7 @@ IMAGE_WIDTH = 500
 IMAGE_HEIGHT = 500
 
 # TO DO
-# 3. bug with small fonts on larger img sizes
+# input params
 
 # NORMALIZE INPUT DATA FROM FILE AND BUILD WORD DICT
 stopwords = set_stopwords(STOPWORDS_DATA_PATH)
