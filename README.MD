@@ -1,4 +1,19 @@
-# WIP
+# Word Cloud Generator
+## Algorithm Overview
+This is a Word Cloud Generator, which will attempt to place `w` number of the most common words from an input text file, `f`, on an image of size `NxN`. Below I've summarized my implementation and some of the considerations taken:
+1. Collect input parameters `w`, `f`, and `N`
+2. Build Dictionary of `stopwords`, which uninteresting words to blacklist.
+3. Build the `vocabulary` Dictionary, which are the words contained in `f` that are NOT in the `stopwords` Dictionary.
+4. Generate an `NxN` grid to optimize placement of words in the generated Word Cloud, as the program only tries to place words in places where two lines of the same colour/ thickness intersect perpendicularly.
+5. Attempts to place each word on each remaining square in the`NxN` grid
+   1. A valid placement is:
+      1. When the collision box around the word to be placed does NOT collide with any other placed word's collision box.
+      2. When the collision box around the word lies within the `NxN` grid's coordinates
+6. Upon successful execution, the output Word Cloud image will be saved to `output/wordcloud.png`
+
+## Sample Execution
+
+
 
 ## Sample Results
 ### Sample Outputs 

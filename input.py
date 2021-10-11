@@ -1,5 +1,6 @@
-# Allows you to prompt the user for a filename (string input) and returns the path providing the file exists
 import os
+
+# Allows you to prompt the user for a filename (string input) and returns the path providing the file exists
 def user_input_filename(prompt):
     value = ""
     while value == "":
