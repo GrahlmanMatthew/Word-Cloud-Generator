@@ -42,6 +42,7 @@ class GridGenerator:
                     num_drawn += 1
                     break
         GRID_IMG.save(grid_path)
+        print("\nSaved image of grid: %s" % grid_path)
 
     def get_grid(self):
         return self.grid

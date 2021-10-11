@@ -59,7 +59,10 @@ def place_words(vocab, grid, grid_gen, wc_img_path=WC_IMG_FILEPATH, wc_bounds_im
 
     # Save output images
     WC_BOUNDS_IMG.save(wc_bounds_img_path)
+    print("\nSaved image of word bounds: %s" % wc_bounds_img_path)
+
     WC_IMG.save(wc_img_path)
+    print("\nSaved image of Word Cloud: %s" % wc_img_path)
 
 # RANDOMLY SELECT RANDOM FONT PATH
 def get_random_font_path():
