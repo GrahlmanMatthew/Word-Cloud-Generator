@@ -2,8 +2,7 @@ import os
 import random
 from PIL import Image, ImageDraw
 
-# DEFAULT OUTPUT PATH
-GRID_IMG_FILEPATH = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'output', 'grid.png'))
+GRID_IMG_FILEPATH = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'output', 'grid.png'))  # DEFAULT OUTPUT PATH
 
 # GRID GENERATOR
 class GridGenerator:
@@ -16,7 +15,7 @@ class GridGenerator:
         self.exponent = num_sq[0]
         self.num_squares = num_sq[1]
 
-        self.grid = generate_grid_coords(self.grid_width, self.grid_height, self.num_squares)
+        self.grid = generate_grid_coords(self.grid_width, self.grid_height, self.num_squares, self.exponent)
 
     # DRAWS GRID AND OUTPUTS IT
     def draw_grid(self, grid_path=GRID_IMG_FILEPATH):
@@ -53,6 +52,12 @@ class GridGenerator:
     def get_grid_height(self):
         return self.grid_height
 
+    def get_grid_exponent(self):
+        return self.exponent
+
+    def get_num_squares(self):
+        return self.num_squares
+
 # Find 4 subsquares within a given square, just provide start/end coords for the initial square
 def find_subsquares(start_coord, end_coord):
     startx, starty = start_coord[0], start_coord[1]
@@ -60,35 +65,20 @@ def find_subsquares(start_coord, end_coord):
     width = endx - startx
     height = endy - starty
     if starty == 0:
-        print("y=0")
         sq1 = ((startx, starty), (width/2 + startx, height/2))
-
         sq2 = ((width/2 + startx, starty), (endx, height/2))
-        print(sq2)
-
         sq3 = ((startx, height/2), (width/2 + startx, height))
         sq4 = ((width/2 + startx, height/2 + starty), (endx, endy))
-        return (sq1, sq2, sq3, sq4)
     elif startx == 0:
-        print("x=0")
         sq1 = ((startx, starty), (width/2, height/2 + starty))
-
         sq2 = ((width/2 + startx, starty), (endx, height/2 + starty))
-        print(sq2)
-
         sq3 = ((startx, height/2 + starty), (width/2 + startx, height  + starty))
         sq4 = ((width/2 + startx, height/2 + starty), (endx, endy))
-        return (sq1, sq2, sq3, sq4)
     else:
-        print("else")
         sq1 = ((startx, starty), (width/2 + startx, height/2 + starty))
-
         sq2 = ((width/2 + startx, starty), (endx, height/2 + starty))
-        print(sq2)
-
         sq3 = ((startx, height/2 + starty), (width/2 + startx, height  + starty))
         sq4 = ((width/2 + startx, height/2 + starty), (endx, endy))
-        return (sq1, sq2, sq3, sq4)
     return (sq1, sq2, sq3, sq4)
 
 def center_word_in_square(square, word_box):
@@ -105,7 +95,7 @@ def calculate_num_squares(num_words):
         exp += 1
     return exp, num_squares
 
-def generate_grid_coords(grid_width, grid_height, num_squares):
+def generate_grid_coords(grid_width, grid_height, num_squares, exponent):
     square = ((0, 0), (grid_width, grid_height))
     square_list = []
     square_list.append(square)
@@ -115,7 +105,26 @@ def generate_grid_coords(grid_width, grid_height, num_squares):
         for subsq in subsquares:
             square_list.append(subsq)
         index += 1
-    return square_list
+
+    # orders/ prioritizes squares in the grid for future word placement
+    ordered_squares = []
+    val, prev_val = 0, 0
+    for e in range(0, exponent):
+        prev_val = val
+        val += pow(4, e)
+
+        if e == 0:  # 1rst grid layer
+            ordered_squares.append(square_list[val-1])
+        elif e == 1 or e == 2:      # 2nd/3rd grid layers
+            sublist = square_list[prev_val:val]
+            for item in sublist:
+                ordered_squares.append(item)
+        else:       # randomize order of all other box on other grid layers
+            sublist = square_list[prev_val:val]
+            random.shuffle(sublist)
+            for item in sublist:
+                ordered_squares.append(item)
+    return ordered_squares
 
 # Generates a random RGB Colour tuple
 def colour():

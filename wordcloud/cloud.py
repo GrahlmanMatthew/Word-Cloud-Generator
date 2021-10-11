@@ -41,7 +41,7 @@ def place_words(vocab, grid, grid_gen, wc_img_path=WC_IMG_FILEPATH, wc_bounds_im
             for square in grd:
                 word_box_size = font.getsize(word)
                 coords = center_word_in_square(square, word_box_size)
-                word_box = (coords[0], coords[1]), (coords[0] + word_box_size[0], coords[1] + word_box_size[1]) # add back constant here for word box padding
+                word_box = (coords[0], coords[1]), (coords[0] + word_box_size[0], coords[1] + word_box_size[1])
 
                 aabb = AABB([(word_box[0][0], word_box[1][0]), (word_box[0][1], word_box[1][1])])   # potential node (word placement) in tree
                 collides = word_box_tree.does_overlap(aabb)     # returns true if node (word placement) does not collide with already placed words

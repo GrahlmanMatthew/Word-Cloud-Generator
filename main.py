@@ -14,8 +14,7 @@ IMAGE_WIDTH = 500
 IMAGE_HEIGHT = 500
 
 # TO DO
-# 1. MAKE WORD PLACEMENT FAVOUR THE CENTER OF THE CANVAS
-# 2. CLEAN UP IMAGE GENERATION [wip]
+# 3. bug with small fonts on larger img sizes
 
 # NORMALIZE INPUT DATA FROM FILE AND BUILD WORD DICT
 stopwords = set_stopwords(STOPWORDS_DATA_PATH)
@@ -25,6 +24,7 @@ vocab = create_vocab(NUM_WORDS, INPUT_DATA_PATH, stopwords)
 grid_gen = GridGenerator(IMAGE_WIDTH, IMAGE_HEIGHT, NUM_WORDS)
 grid_gen.draw_grid()
 grid = grid_gen.get_grid()
+
 
 # CREATES WORDLCOUD
 WC_IMG_FILEPATH = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '..', 'output', 'wordcloud.png'))   
